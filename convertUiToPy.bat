@@ -1,0 +1,1 @@
+venv\Scripts\pyuic5.exe  quiz.ui -o core.py

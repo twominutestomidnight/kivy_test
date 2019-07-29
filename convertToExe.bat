@@ -1,0 +1,1 @@
+C:\\Users\\User\\PycharmProjects\\10to16\\venv\\Scripts\\pyinstaller.exe -F 10to16.py

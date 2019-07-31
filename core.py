@@ -121,7 +121,6 @@ class Ui_Form(QtWidgets.QWidget):
 
     @pyqtSlot()
     def on_click1(self):
-        # while True:
         print('PyQt5 button1 click')
             # print(self.textBrowser.setText('AI1524PO'))
         font = QtGui.QFont()
@@ -151,7 +150,7 @@ class Ui_Form(QtWidgets.QWidget):
 
         # self.textBrowser_4.setText('Similarity : '+str(accuracy[0]))
         self.textBrowser_4.setText(str(accuracy[0]))
-            # time.sleep(5)
+
 
 
 

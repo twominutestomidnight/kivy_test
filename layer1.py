@@ -50,22 +50,21 @@ class Ui_Form(QtWidgets.QWidget):
 
 
     def openWindow(self):
-        self.window = QtWidgets.QMainWindow()
+        # self.window = QtWidgets.QMainWindow()
+        # number_of_cameras = self.spinBox.value()
+        # print("number_of_cameras : ", number_of_cameras)
+        # self.ui = Ui_Second_Form(number_of_cameras)
+        # self.ui.setupUi(self.window)
+        # MainWindow.hide()
+        # self.window.show()
+        self.SecondWindow = QtWidgets.QMainWindow()
         number_of_cameras = self.spinBox.value()
         print("number_of_cameras : ", number_of_cameras)
-
-        # f = open("demofile2.txt", "w")
-        # f.write(str(number_of_cameras))
-        # f.close()
-
-        self.ui = Ui_Second_Form(number_of_cameras)
-        self.ui.setupUi(self.window)
-        MainWindow.hide()
-        self.window.show()
-        # SecondWindow = QtWidgets.QMainWindow()
-        # self.ui = Ui_Second_Form()
-        # self.ui.setupUi(SecondWindow)
-        # SecondWindow.show()
+        if number_of_cameras > 0 :
+            self.ui = Ui_Second_Form(number_of_cameras,self.SecondWindow)
+            self.ui.setupUi(self.SecondWindow)
+            MainWindow.hide()
+            self.SecondWindow.show()
 
 
 

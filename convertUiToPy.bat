@@ -1,1 +1,1 @@
-venv\Scripts\pyuic5.exe  quiz.ui -o core.py
+venv\Scripts\pyuic5.exe  previewImage.ui -o previewImage.py

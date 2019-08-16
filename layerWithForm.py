@@ -9,16 +9,16 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
-from PyQt5.QtCore import pyqtSlot
 from Camera import Camera
+from previewImage import *
 
-array_of_cameras = []
 
 class Ui_Second_Form(object):
+    array_of_cameras = []
     count = 1
-    def __init__(self, num_of_cams):
+    def __init__(self, num_of_cams, wind):
         self.number = num_of_cams
-
+        self.prevWindow = wind
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -62,6 +62,7 @@ class Ui_Second_Form(object):
 
         self.nextBtn.clicked.connect(self.next_click)
 
+
         self.ip = QtWidgets.QLineEdit(Form)
         self.ip.setGeometry(QtCore.QRect(220, 130, 201, 41))
         font = QtGui.QFont()
@@ -94,6 +95,12 @@ class Ui_Second_Form(object):
         font.setPointSize(16)
         self.prevBtn.setFont(font)
         self.prevBtn.setObjectName("prevBtn")
+
+        self.prevBtn.clicked.connect(self.prev_click)
+
+
+        self.prevBtn.hide()
+
         self.statusBtn = QtWidgets.QPushButton(Form)
         self.statusBtn.setGeometry(QtCore.QRect(300, 10, 131, 41))
         font = QtGui.QFont()
@@ -114,9 +121,19 @@ class Ui_Second_Form(object):
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
+        if self.number == 1:
+            self.nextBtn.setText("Done.")
+
     # @pyqtSlot()
     def status_click(self):
         print('PyQt5 button1 click')
+        ###########################
+        # self.window = QtWidgets.QMainWindow()
+        # self.ui = Ui_PreviewImage(camera_array=self.array_of_cameras)
+        # self.ui.setup(self.window)
+        # self.window.show()
+        ###########################
+
         # print(self.ip.text())
         print(Camera(self.ip.text(), self.port.text(), self.login.text(), self.password.text()))
         # TODO: here will be check status of connection, send request to camera, if status = 200, write OK,otherwise write enter correct information or check connection
@@ -127,18 +144,111 @@ class Ui_Second_Form(object):
             self.status.setText("Status : False")
 
     def next_click(self):
+        # if self.count == self.number:
+        #     print(len(self.array_of_cameras))
+        #     for a in self.array_of_cameras:
+        #         print(a)
+        #     exit()
+
         print('PyQt5 next_click click')
-        array_of_cameras.append(Camera(self.ip.text(), self.port.text(), self.login.text(), self.password.text()))
+        self.array_of_cameras.append(Camera(self.ip.text(), self.port.text(), self.login.text(), self.password.text()))
+        # self.array_of_cameras[self.count](Camera(self.ip.text(), self.port.text(), self.login.text(), self.password.text()))
         self.ip.setText("0.0.0.0")
         self.port.setText("80")
         self.login.setText("login")
         self.password.setText("password")
+
+        print("self.count", self.count)
+        print("self.number", self.number)
+        # if self.count == self.number:
+        #     print(len(self.array_of_cameras))
+        #     for a in self.array_of_cameras:
+        #         print(a)
+        #
+        #     # self.window = QtWidgets.QMainWindow()
+        #     # self.ui = Ui_PreviewImage(camera_array=self.array_of_cameras)
+        #     # self.ui.setup(self.window)
+        #     # self.window.show()
+        #
+        #     # self.window.hide()
+        #
+        #
+        #     exit()
+
         self.count += 1
+
+        if self.count > self.number:
+            print(len(self.array_of_cameras))
+            for a in self.array_of_cameras:
+                print(a)
+
+            self.prevWindow.hide()
+            self.newPage()
+            print("jkhjkhjkhjhgjg")
+
+            # self.window = QtWidgets.QMainWindow()
+            # self.ui = Ui_PreviewImage(camera_array=self.array_of_cameras)
+            # self.ui.setup(self.window)
+            # self.window.show()
+
+            # self.window.hide()
+
+
+            # exit()
+        # self.prevBtn.show()
+
         if self.count<= self.number:
             self.computerNumber.setText("Computer #{}".format(self.count))
-        else:
+        if self.count == self.number:
             self.nextBtn.setText("Done.")
 
+
+
+    def newPage(self):
+        # self.window = QtWidgets.QMainWindow()
+        # self.ui = Ui_PreviewImage(camera_array=self.array_of_cameras, )
+        # self.ui.setup(self.window)
+        # self.window.show()
+        self.ThrdWindow = QtWidgets.QMainWindow()
+        self.ui = Ui_PreviewImage(self.array_of_cameras, self.ThrdWindow)
+        self.ui.setup(self.ThrdWindow)
+        # self.SecondWindow.hide()
+        self.ThrdWindow.show()
+
+
+    def prev_click(self):
+        print('PyQt5 prev_click click')
+        self.count -= 1
+        print(self.count)
+        # array_of_cameras.append(Camera(self.ip.text(), self.port.text(), self.login.text(), self.password.text()))
+        # print("array_of_cameras", array_of_cameras[0])
+
+        # self.array_of_cameras[self.count](Camera(self.ip.text(), self.port.text(), self.login.text(), self.password.text()))
+        # self.array_of_cameras[self.count].ip = self.ip.text()
+        # self.array_of_cameras[self.count].port = self.port.text()
+        # self.array_of_cameras[self.count].login = self.login.text()
+        # self.array_of_cameras[self.count].password = self.password.text()
+        print(self.array_of_cameras[self.count-1].ip)
+        print("self.array_of_cameras[self.count])", self.array_of_cameras[self.count-1])
+
+
+        self.ip.setText(self.array_of_cameras[self.count-1].ip)
+        self.port.setText(self.array_of_cameras[self.count-1].port)
+        self.login.setText(self.array_of_cameras[self.count-1].login)
+        self.password.setText(self.array_of_cameras[self.count-1].password)
+
+        # self.array_of_cameras[self.count - 1].ip = self.ip.text()
+        # self.array_of_cameras[self.count - 1].port = self.port.text()
+        # self.array_of_cameras[self.count - 1].login = self.login.text()
+        # self.array_of_cameras[self.count - 1].password = self.password.text()
+
+        #
+        # self.prevBtn.show()
+        #
+        # if self.count<= self.number:
+        #     self.computerNumber.setText("Computer #{}".format(self.count))
+        # if self.count == self.number:
+        #     self.nextBtn.setText("Done.")
 
 
 
@@ -159,6 +269,15 @@ class Ui_Second_Form(object):
         self.statusBtn.setText(_translate("Form", "Check status "))
         self.status.setText(_translate("Form", "Status : "))
 
+    def layerWindow(self):
+        print("hgfghf")
+        self.ThrdWindow = QtWidgets.QMainWindow()
+        self.ui = Ui_PreviewImage(self.array_of_cameras)
+        self.ui.setup(self.ThrdWindow)
+        # self.SecondWindow.hide()
+        self.ThrdWindow.show()
+        print("hgfghf")
+
 
 #
 # if __name__ == '__main__':
@@ -166,7 +285,7 @@ class Ui_Second_Form(object):
 #     app = QtWidgets.QApplication(sys.argv)
 #
 #     MainWindow = QtWidgets.QMainWindow()
-#     ui = Ui_Second_Form()
+#     ui = Ui_Form()
 #     ui.setupUi(MainWindow)
 #     MainWindow.show()
 #     sys.exit(app.exec_())
